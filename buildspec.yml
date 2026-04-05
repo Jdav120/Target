@@ -14,9 +14,12 @@ phases:
     commands:
       - cp aws-windows-deployment-manifest.json ./publish/
       - cp web.config ./publish/ 2>/dev/null || true
-      - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - apt-get update -y && apt-get install -y zip
-      - cd publish && zip -r ../app.zip . && cd ..
+      - cd publish && zip -r site.zip . --exclude aws-windows-deployment-manifest.json && cd ..
+      - mkdir deploy
+      - cp publish/aws-windows-deployment-manifest.json deploy/
+      - cp publish/site.zip deploy/
+      - cd deploy && zip -r ../app.zip . && cd ..
 
 artifacts:
   files:
