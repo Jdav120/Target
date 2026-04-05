@@ -13,6 +13,7 @@ phases:
   post_build:
     commands:
       - cp aws-windows-deployment-manifest.json ./publish/
+      - cp web.config ./publish/ 2>/dev/null || true
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - apt-get update -y && apt-get install -y zip
       - cd publish && zip -r ../app.zip . && cd ..
