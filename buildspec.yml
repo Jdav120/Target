@@ -3,7 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - dotnet --version    # will show 8.0.x natively
+      - dotnet --version
       - dotnet restore Target.sln
 
   build:
@@ -12,7 +12,7 @@ phases:
 
   post_build:
     commands:
-      - cp Procfile ./publish/
+      - echo "web: dotnet Target.dll" > ./publish/Procfile    # ← create it directly, no need for a file in repo
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - cd publish && zip -r ../app.zip . && cd ..
 
