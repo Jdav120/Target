@@ -11,14 +11,14 @@ phases:
   pre_build:
     commands:
       - echo Restoring dependencies...
-      - dotnet restore MyApp/MyApp.csproj
+      - dotnet restore Target/Target.csproj
 
   build:
     commands:
       - echo Running tests...
-      - dotnet test MyApp/MyApp.csproj --no-restore
+      - dotnet test Target/Target.csproj --no-restore
       - echo Publishing app...
-      - dotnet publish MyApp/MyApp.csproj -c Release -o ./publish
+      - dotnet publish Target/Target.csproj -c Release -o ./publish
 
   post_build:
     commands:
