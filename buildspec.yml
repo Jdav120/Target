@@ -1,18 +1,14 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
-      - /root/.dotnet/dotnet --version    # confirm 8.0.x using direct path
-
   pre_build:
     commands:
-      - /root/.dotnet/dotnet restore Target.sln
+      - dotnet --version    # will show 8.0.x natively
+      - dotnet restore Target.sln
 
   build:
     commands:
-      - /root/.dotnet/dotnet publish Target.sln -c Release -o ./publish
+      - dotnet publish Target.sln -c Release -o ./publish
 
   post_build:
     commands:
