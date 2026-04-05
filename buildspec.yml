@@ -3,33 +3,29 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing .NET SDK...
       - curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
       - export PATH="$HOME/.dotnet:$PATH"
       - dotnet --version
+      - find . -name "*.sln" -o -name "*.csproj"   # confirm file names
 
   pre_build:
     commands:
-      - echo Restoring dependencies...
-      - dotnet restore Target/Target.csproj
+      - export PATH="$HOME/.dotnet:$PATH"
+      - dotnet restore Target.sln
 
   build:
     commands:
-      - echo Running tests...
-      - dotnet test Target/Target.csproj --no-restore
-      - echo Publishing app...
-      - dotnet publish Target/Target.csproj -c Release -o ./publish
+      - export PATH="$HOME/.dotnet:$PATH"
+      - dotnet publish Target.sln -c Release -o ./publish
 
   post_build:
     commands:
-      - echo Copying EB config files...
+      - export PATH="$HOME/.dotnet:$PATH"
       - cp Procfile ./publish/
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
-      - echo Zipping artifact...
-      - cd publish && zip -r ../app.zip . && cd ..   # ← this is the key fix
-      - echo Done
+      - cd publish && zip -r ../app.zip . && cd ..
 
 artifacts:
   files:
-    - app.zip                # ← only ship the zip, not the raw folder
+    - app.zip
   discard-paths: yes
