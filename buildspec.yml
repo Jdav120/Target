@@ -8,7 +8,7 @@ phases:
 
   build:
     commands:
-      - dotnet publish Target.sln -c Release -o ./publish
+      - dotnet publish Target.csproj -c Release -o ./publish
 
   post_build:
     commands:
