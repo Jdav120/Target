@@ -1,26 +1,35 @@
 version: 0.2
 
+env:
+  variables:
+    DOTNET_ROOT: "/root/.dotnet"
+    PATH: "/root/.dotnet:/root/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 phases:
   install:
     commands:
       - curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
-      - export PATH="$HOME/.dotnet:$PATH"
-      - dotnet --version
-      - find . -name "*.sln" -o -name "*.csproj"   # confirm file names
+      - export DOTNET_ROOT="/root/.dotnet"
+      - export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
+      - dotnet --version    # should now show 8.0.x
 
   pre_build:
     commands:
-      - export PATH="$HOME/.dotnet:$PATH"
+      - export DOTNET_ROOT="/root/.dotnet"
+      - export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
+      - dotnet --version    # confirm 8.0.x here too
       - dotnet restore Target.sln
 
   build:
     commands:
-      - export PATH="$HOME/.dotnet:$PATH"
+      - export DOTNET_ROOT="/root/.dotnet"
+      - export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
       - dotnet publish Target.sln -c Release -o ./publish
 
   post_build:
     commands:
-      - export PATH="$HOME/.dotnet:$PATH"
+      - export DOTNET_ROOT="/root/.dotnet"
+      - export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
       - cp Procfile ./publish/
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - cd publish && zip -r ../app.zip . && cd ..
