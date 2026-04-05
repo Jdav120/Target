@@ -14,7 +14,8 @@ phases:
     commands:
       - cp Procfile ./publish/
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
-      - python3 -c "import shutil; shutil.make_archive('app', 'zip', 'publish')"
+      - apt-get update -y && apt-get install -y zip
+      - cd publish && zip -r ../app.zip . && cd ..
 
 artifacts:
   files:
