@@ -12,7 +12,7 @@ phases:
 
   post_build:
     commands:
-      - echo "web: dotnet Target.dll" > ./publish/Procfile    # ← create it directly, no need for a file in repo
+      - cp Procfile ./publish/
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - cd publish && zip -r ../app.zip . && cd ..
 
