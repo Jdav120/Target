@@ -12,6 +12,7 @@ phases:
 
   post_build:
     commands:
+      - apt-get install -y zip
       - cp Procfile ./publish/
       - cp -r .ebextensions ./publish/ 2>/dev/null || true
       - cd publish && zip -r ../app.zip . && cd ..
