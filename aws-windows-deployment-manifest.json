@@ -3,7 +3,7 @@
   "deployments": {
     "aspNetCoreWeb": [
       {
-        "name": "MyApp",
+        "name": "Target",
         "parameters": {
           "appBundle": "app.zip",
           "iisPath": "/",
