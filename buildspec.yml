@@ -4,17 +4,19 @@ phases:
   install:
     runtime-versions:
       dotnet: 8.0
-  pre_build:
-    commands:
-      - dotnet restore
   build:
     commands:
-      - dotnet publish -c Release -o ./output
-  post_build:
-    commands:
-      - echo Build complete
+      - echo Publishing the application...
+      - dotnet publish src/YourApp.csproj -c Release -o ./publish
+
+post_build:
+  commands:
+    - echo Zipping the published output...
+    - cd publish && zip -r ../app.zip . && cd ..
+    - echo Done zipping
 
 artifacts:
   files:
-    - "**/*"
-  base-directory: output
+    - app.zip
+    - aws-windows-deployment-manifest.json
+  discard-paths: yes
