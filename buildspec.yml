@@ -13,11 +13,16 @@ phases:
 
   pre_build:
     commands:
+      - dotnet --version
+      - dotnet restore Target.sln
+
       - echo Restoring NuGet packages...
       - dotnet restore
 
   build:
     commands:
+      - dotnet publish Target.csproj -c Release -o ./publish
+
       - echo Build started on `date`
       - dotnet build --configuration Release --no-restore
       - echo Running tests...
@@ -25,6 +30,10 @@ phases:
 
   post_build:
     commands:
+      - cp Procfile ./publish/
+      - apt-get update -y && apt-get install -y zip
+      - cd publish && zip -r ../app.zip . && cd ..
+
       - echo Publishing application...
       - dotnet publish --configuration Release --no-build --output ./publish
       - cp Procfile ./publish/Procfile
@@ -32,5 +41,7 @@ phases:
 
 artifacts:
   files:
+    - app.zip
+  discard-paths: yes
     - deploy.zip
   discard-paths: yes
